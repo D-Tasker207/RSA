@@ -1,5 +1,9 @@
 
-// import java.util.Scanner;
+/**
+ * Implementation of RSA public/private key encryption algorithm
+ * 
+ * @author Duncan Tasker
+ */
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
@@ -9,7 +13,13 @@ public class RSA {
 
     private static final int RSA_MODULUS_BIT_LENGTH = 2048;
 
-    // generate private and public rsa keys stored as bigints
+    /**
+     * Generate a public/private key pair using the provided prime numbers
+     * 
+     * @param p One input prime number
+     * @param q Other input prime number
+     * @return KeyPair instance containing the public and private keys
+     */
     public static KeyPair generateKeys(BigInteger p, BigInteger q) {
         BigInteger n = p.multiply(q);
         BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
@@ -18,6 +28,11 @@ public class RSA {
         return new KeyPair(new RSAKey(n, e), new RSAKey(n, d));
     }
 
+    /**
+     * Generate a public/private key pair using random prime numbers
+     * 
+     * @return KeyPair instance containing the public and private keys
+     */
     public static KeyPair generateKeys() {
         BigInteger p = BigInteger.probablePrime(RSA_MODULUS_BIT_LENGTH, new SecureRandom());
         BigInteger q = BigInteger.probablePrime(RSA_MODULUS_BIT_LENGTH, new SecureRandom());
@@ -29,14 +44,28 @@ public class RSA {
         return new KeyPair(new RSAKey(n, e), new RSAKey(n, d));
     }
 
-    // TODO: the OEAP padding is not working, hence calls to that class are disabled
+    /**
+     * Encrypt a message using the provided key
+     * 
+     * @param plainText String message to be encrypted
+     * @param key       RSAKey instance for the encryption key
+     * @return BigInteger representing the encrypted message
+     */
     public static BigInteger encrypt(String plainText, RSAKey key) {
+        // TODO: the OEAP padding is not working, hence calls to that class are disabled
         // byte[] paddedMessage = OAEP.performOAEPPadding(plainText,
         // key.getMod().bitLength() / 8);
         byte[] paddedMessage = plainText.getBytes(StandardCharsets.UTF_8);
         return new BigInteger(paddedMessage).modPow(key.getExp(), key.getMod());
     }
 
+    /**
+     * Decrypt a message using the provided key
+     * 
+     * @param cypherText BigInteger representing the encrypted message
+     * @param key        RSAKey instance for the decryption key
+     * @return String representing the decrypted message
+     */
     public static String decrypt(BigInteger cypherText, RSAKey key) {
         byte[] decryptedBytes = cypherText.modPow(key.getExp(), key.getMod()).toByteArray();
         return new String(decryptedBytes, StandardCharsets.UTF_8);

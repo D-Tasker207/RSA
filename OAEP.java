@@ -1,8 +1,22 @@
+
+/**
+ * Implementation of Optimal Asymmetric Encryption Padding (OAEP)
+ * 
+ * @author Duncan Tasker
+ */
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class OAEP {
+
+    /**
+     * Pad the input string as per OAEP specification
+     * 
+     * @param message   String message to be padded
+     * @param blockSize int size of output block
+     * @return byte array containing the padded message
+     */
     public static byte[] performOAEPPadding(String message, int blockSize) {
         // OAEP padding implementation (simplified example)
         // Hash the message (SHA-256)
@@ -24,6 +38,12 @@ public class OAEP {
         return paddedMessage;
     }
 
+    /**
+     * Remove OAEP padding from the provided byte array
+     * 
+     * @param paddedMessage byte array of a padded message
+     * @return String containing original unpadded message
+     */
     public static String performOAEPUnpadding(byte[] paddedMessage) {
         // OAEP unpadding implementation (simplified example)
 
@@ -53,6 +73,12 @@ public class OAEP {
         return new String(hashedMessage);
     }
 
+    /**
+     * Hash the provided byte array using SHA-256
+     * 
+     * @param message byte array to be hashed
+     * @return byte array containing the hash
+     */
     private static byte[] hashSHA256(byte[] message) {
         MessageDigest md;
         try {
@@ -66,6 +92,12 @@ public class OAEP {
 
     }
 
+    /**
+     * Generate a byte array of random bytes of the provided length
+     * 
+     * @param length int length of the byte array
+     * @return byte array of random bytes
+     */
     private static byte[] generateRandomPadding(int length) {
         byte[] padding = new byte[length];
         new SecureRandom().nextBytes(padding);

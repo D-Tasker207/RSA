@@ -1,5 +1,7 @@
 
 /**
+ * Utility class for calculating the greatest common divisor of two numbers
+ * 
  * @author Duncan Tasker
  */
 
